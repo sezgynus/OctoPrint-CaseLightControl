@@ -8,56 +8,38 @@ $(function() {
     function caselightcontrolViewModel(parameters) {
         var self = this;
 
-        self.settingsViewModel = parameters[0];
-        self.controlViewModel = parameters[1];
+		self.settingsViewModel = parameters[0];
+		self.controlViewModel = parameters[1];
 
-        //self.lightState = ko.observable(false); // Açık/Kapalı durumu
-        //self.brightness = ko.observable(0); // Parlaklık değeri 0-255 arası
+        self.distance = ko.observable();
 
-        self.toggleLight = function() {
-            var command = self.lightState() ? "M355 S1" : "M355 S0";
-            OctoPrint.control.sendGcode(command);
+        self.onBeforeBinding = function() {
+            self.distance(self.settingsViewModel.settings.plugins.babystepping.distance());
         };
 
-        self.updateBrightness = function() {
-            var brightnessValue = self.brightness();
-            OctoPrint.control.sendGcode("M355 P" + brightnessValue);
+        self.onEventSettingsUpdated  = function() {
+            self.distance(self.settingsViewModel.settings.plugins.babystepping.distance());
         };
 
-        self.getAdditionalControls = function() {
+		self.getAdditionalControls = function() {
             return [
                 {
                     name: "Case Light Control", type: "section", layout: "horizontal", children: [
                         {
-                            type: "custom_control",
-                            name: "Light Switch",
-                            controls: [
-                                {
-                                    type: "checkbox",
-                                    bind: "lightState",
-                                    action: "toggleLight"
-                                }
-                            ]
+                            type: "javascript",
+                            javascript: "OctoPrint.control.sendGcode('M355 S1'));",
+                            name: "Case Light ON"
                         },
                         {
-                            type: "custom_control",
-                            name: "Brightness",
-                            controls: [
-                                {
-                                    type: "slider",
-                                    bind: "brightness",
-                                    min: 0,
-                                    max: 255,
-                                    step: 1,
-                                    action: "updateBrightness"
-                                }
-                            ]
+                            type: "javascript",
+                            javascript: "OctoPrint.control.sendGcode('M355 S0');",
+                            name: "Case Light OFF"
                         }
                     ]
                 }
             ];
-        };
-    }
+		};
+	}
 
     OCTOPRINT_VIEWMODELS.push({
         construct: caselightcontrolViewModel,
