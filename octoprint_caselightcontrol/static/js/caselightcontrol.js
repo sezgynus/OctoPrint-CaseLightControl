@@ -21,7 +21,7 @@ $(function() {
             self.distance(self.settingsViewModel.settings.plugins.babystepping.distance());
         };
 
-		self.getAdditionalControls = function() {
+	self.getAdditionalControls = function() {
             return [
                 {
                     name: "Case Light Control", type: "section", layout: "horizontal", children: [
@@ -38,8 +38,8 @@ $(function() {
                     ]
                 }
             ];
-		};
-	}
+	};
+    }
 
     OCTOPRINT_VIEWMODELS.push({
         construct: caselightcontrolViewModel,
