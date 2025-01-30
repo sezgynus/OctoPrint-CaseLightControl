@@ -14,30 +14,30 @@ $(function() {
         self.distance = ko.observable();
 
         self.onBeforeBinding = function() {
-            self.distance(self.settingsViewModel.settings.plugins.babystepping.distance());
+            self.distance(self.settingsViewModel.settings.plugins.caselightcontrol.distance());
         };
 
         self.onEventSettingsUpdated  = function() {
-            self.distance(self.settingsViewModel.settings.plugins.babystepping.distance());
+            self.distance(self.settingsViewModel.settings.plugins.caselightcontrol.distance());
         };
 
 	self.getAdditionalControls = function() {
-            return [
-                {
-                    name: "Case Light Control", type: "section", layout: "horizontal", children: [
-                        {
-                            type: "javascript",
-                            javascript: "OctoPrint.control.sendGcode('M355 S1'));",
-                            name: "Case Light ON"
-                        },
-                        {
-                            type: "javascript",
-                            javascript: "OctoPrint.control.sendGcode('M355 S0');",
-                            name: "Case Light OFF"
-                        }
-                    ]
-                }
-            ];
+		return [
+			{
+				name: "Case Light Control", type: "section", layout: "horizontal", children: [
+					{
+						type: "javascript",
+						javascript: "OctoPrint.control.sendGcode('M355 S1');",
+						name: "Case Light ON"
+					},
+					{
+						type: "javascript",
+						javascript: "OctoPrint.control.sendGcode('M355 S0');",
+						name: "Case Light OFF"
+					}
+				]
+			}
+		];
 	};
     }
 
